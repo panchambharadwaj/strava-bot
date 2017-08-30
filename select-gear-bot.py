@@ -20,7 +20,7 @@ def notifyByMail(message):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login('pancham.geek@gmail.com', 'Kg8b2k78^pvx')
+    server.login('pancham.geek@gmail.com', '')
     text = msg.as_string()
     server.sendmail(fromaddr, toaddr, text)
     server.quit()
@@ -43,7 +43,7 @@ try:
     bike = "Indoor Trainer"
 
     headers = {
-            'Authorization': 'Bearer b344824d8c65723a4bd1d0c9ab36f709b7dab09a',
+            'Authorization': 'Bearer ',
     }
 
     data_per_page = [

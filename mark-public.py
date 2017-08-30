@@ -2,7 +2,7 @@ import requests
 import sys
 
 headers = {
-    'Authorization': 'Bearer 7dc9015af922a5260f91538b7d51da027b83f0b0',
+    'Authorization': 'Bearer ',
 }
 
 data_private = [
