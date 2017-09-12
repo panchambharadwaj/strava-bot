@@ -55,7 +55,8 @@ def notifyByMail(message):
     server.quit()
 
 config_path = "/etc/strava-bot.ini"
-log_path = get_config(config_path, 'Configuration', 'Log')
+log_path = get_config(config_path, 'Configuration', 'Athlete-Name')
+athlete_name = get_config(config_path, 'Configuration', 'Log')
 authorization = get_config(config_path, 'Configuration', 'Authorization')
 activity_name = get_config(config_path, 'Configuration', 'Activity-Name')
 bike = get_config(config_path, 'Configuration', 'Bike')
@@ -151,7 +152,7 @@ try:
                         if update_gear_resp.status_code == 200:
                             logging.info("For the activity: " + str(activity['id']) + " dated: " + activity['start_date_local'] + " the following has been updated - 1. Name: 'Indoor Cycling' 2. Bike: '" + bike + "' 3. Tag: 'Workout'")
                             if isMailActive == 'yes':
-                                notifyByMail("Hi Chethan,\n\nFor the activity: " + str(activity['id']) + " dated: " + activity['start_date_local'] + " the following has been updated:\n\n1. Name: 'Indoor Cycling'\n2. Bike: '" + bike + "'\n3. Tag: 'Workout'")
+                                notifyByMail("Hi " + athlete_name + ",\n\nFor the activity: " + str(activity['id']) + " dated: " + activity['start_date_local'] + " the following has been updated:\n\n1. Name: 'Indoor Cycling'\n2. Bike: '" + bike + "'\n3. Tag: 'Workout'")
                         else:
                             logging.error("Error Requesting GET https://www.strava.com/api/v3/activities/" + str(activity['id']) + ". Status Code - " + str(update_gear_resp.status_code))
                     else:
