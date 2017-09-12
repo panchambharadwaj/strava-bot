@@ -55,8 +55,8 @@ def notifyByMail(message):
     server.quit()
 
 config_path = "/etc/strava-bot.ini"
-log_path = get_config(config_path, 'Configuration', 'Athlete-Name')
-athlete_name = get_config(config_path, 'Configuration', 'Log')
+log_path = get_config(config_path, 'Configuration', 'Log')
+athlete_name = get_config(config_path, 'Configuration', 'Athlete-Name')
 authorization = get_config(config_path, 'Configuration', 'Authorization')
 activity_name = get_config(config_path, 'Configuration', 'Activity-Name')
 bike = get_config(config_path, 'Configuration', 'Bike')
