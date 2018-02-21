@@ -170,14 +170,14 @@ def get_lastest_activity():
                                                                             data=data_number_of_activities)
     except Exception:
         logging.info("Exception while fetching lastest activity: " + traceback.format_exc())
-        sys.exit(0)
+        pass
     else:
         logging.info(gla_response)
         if gla_response.status_code == 200:
             return gla_response.json()[0]
         else:
             logging.info("Error fetching lastest activity. Status Code: " + str(gla_response.status_code))
-            sys.exit(0)
+            pass
 
 
 def update_activity(ua_latest_activity_id):
@@ -233,35 +233,8 @@ def signal_term_handler(signal, frame):
     logging.info('Bot was killed')
     sys.exit(0)
 
-if __name__ == '__main__':
-    signal.signal(signal.SIGTERM, signal_term_handler)
-    athlete_name, token, update_activity_name, update_private, update_gear, update_workout_type, update_description, email_from_address, email_from_password, email_to_address, email_host, email_port, bot_sleep_time = check_arg(
-        sys.argv[1:])
-    bot_started_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log()
-    logging.info("Bot started at: " + bot_started_at)
-    logging.info("Setting up the Bot")
 
-    email_subject_started = "[Strava Bot] Started at %s"
-    email_subject_update = "[Strava Bot] %s in updating the trainer activity started at %s"
-    email_subject_stopped = "[Strava Bot] Stopped at %s"
-    email_body_started = "Hi %s,\n\nStarted your update trainer activity bot with the below parameters:\n%s\n\nRegards,\nStrava Bot"
-    email_body_update = "Hi %s,\n\n%s in updating the trainer activity with the below parameters:\n%s\n\nhttps://www.strava.com/activities/%s\n\nRegards,\nStrava Bot"
-    email_body_stopped = "Hi %s,\n\nStopped your update trainer activity bot.\n\nRegards,\nStrava Bot"
-    api_athlete_details = "https://www.strava.com/api/v3/athlete"
-    api_athlete_activities = "https://www.strava.com/api/v3/athlete/activities"
-    api_update_activity = "https://www.strava.com/api/v3/activities/%s"
-    data_number_of_activities = [('per_page', '1')]
-
-    requests_session = requests.Session()
-    requests_session.headers.update({'Authorization': 'Bearer ' + token})
-
-    data_update_activity, email_body_parameters = generate_parameters_for_updating_activity_and_email()
-    logging.info("Data to update activity: " + str(data_update_activity))
-
-    notify_by_mail(email_subject_started % bot_started_at, email_body_started % (athlete_name, email_body_parameters))
-
-    logging.info("Bot setup completed")
+def main():
     while True:
         try:
             logging.info("Looking for the latest trainer activity")
@@ -289,3 +262,37 @@ if __name__ == '__main__':
             logging.info("Sleeping for 600 seconds")
             sleep(600)
             continue
+
+            
+if __name__ == '__main__':
+    signal.signal(signal.SIGTERM, signal_term_handler)
+    athlete_name, token, update_activity_name, update_private, update_gear, update_workout_type, update_description, email_from_address, email_from_password, email_to_address, email_host, email_port, bot_sleep_time = check_arg(
+        sys.argv[1:])
+
+    bot_started_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log()
+    logging.info("Bot started at: " + bot_started_at)
+    logging.info("Setting up the Bot")
+
+    email_subject_started = "[Strava Bot] Started at %s"
+    email_subject_update = "[Strava Bot] %s in updating the trainer activity started at %s"
+    email_subject_stopped = "[Strava Bot] Stopped at %s"
+    email_body_started = "Hi %s,\n\nStarted your update trainer activity bot with the below parameters:\n%s\n\nRegards,\nStrava Bot"
+    email_body_update = "Hi %s,\n\n%s in updating the trainer activity with the below parameters:\n%s\n\nhttps://www.strava.com/activities/%s\n\nRegards,\nStrava Bot"
+    email_body_stopped = "Hi %s,\n\nStopped your update trainer activity bot.\n\nRegards,\nStrava Bot"
+    api_athlete_details = "https://www.strava.com/api/v3/athlete"
+    api_athlete_activities = "https://www.strava.com/api/v3/athlete/activities"
+    api_update_activity = "https://www.strava.com/api/v3/activities/%s"
+    data_number_of_activities = [('per_page', '1')]
+
+    requests_session = requests.Session()
+    requests_session.headers.update({'Authorization': 'Bearer ' + token})
+
+    data_update_activity, email_body_parameters = generate_parameters_for_updating_activity_and_email()
+    logging.info("Data to update activity: " + str(data_update_activity))
+
+    notify_by_mail(email_subject_started % bot_started_at, email_body_started % (athlete_name, email_body_parameters))
+
+    logging.info("Bot setup completed")
+
+    main()
