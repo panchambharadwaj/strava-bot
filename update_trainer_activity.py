@@ -197,10 +197,10 @@ def update_activity(ua_latest_activity_id):
             return False
 
 
-def is_activity_new():
+def is_activity_new(ian_latest_activity):
     ian_is_activity_new = False
     for parameter in data_update_activity:
-        if str(latest_activity[parameter[0]]) != parameter[1]:
+        if str(ian_latest_activity[parameter[0]]) != parameter[1]:
             ian_is_activity_new = True
             logging.info("New trainer activity found")
             break
@@ -239,7 +239,7 @@ def main():
         try:
             logging.info("Looking for the latest trainer activity")
             latest_activity = get_lastest_activity()
-            if (latest_activity['trainer']) and (is_activity_new()):
+            if (latest_activity['trainer']) and (is_activity_new(latest_activity)):
                 if update_activity(latest_activity['id']):
                     update_activity_status = "Successful"
                 else:
@@ -263,7 +263,7 @@ def main():
             sleep(600)
             continue
 
-            
+
 if __name__ == '__main__':
     signal.signal(signal.SIGTERM, signal_term_handler)
     athlete_name, token, update_activity_name, update_private, update_gear, update_workout_type, update_description, email_from_address, email_from_password, email_to_address, email_host, email_port, bot_sleep_time = check_arg(
